@@ -7,7 +7,7 @@ const HomePage = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to MyApp</Text>
+      <Text style={styles.title}>Welcome to DriveOnCampus</Text>
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
