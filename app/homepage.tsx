@@ -1,42 +1,33 @@
-// HomePage.js
-
-import React from 'react'
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-} from 'react-native'
+// app/homepage.tsx
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
 
 // Northwestern colors
 const colors = {
   purple: '#4E2A84',
   white: '#FFFFFF',
-}
+};
 
-const HomePage = () => {
-  const handleLogin = () => Alert.alert('Login button pressed')
-  const handleSignUp = () => Alert.alert('Sign Up button pressed')
+const HomePage: React.FC = () => {
+  const router = useRouter();
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to DriveOnCampus</Text>
 
-      {/* Login button: purple bg, white text */}
-      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+      <TouchableOpacity style={styles.loginButton} onPress={() => router.push('/login')}>
         <Text style={styles.loginButtonText}>Login</Text>
       </TouchableOpacity>
 
-      {/* Sign Up button: white bg, purple border/text */}
-      <TouchableOpacity style={styles.signupButton} onPress={handleSignUp}>
+      <TouchableOpacity style={styles.signupButton} onPress={() => router.push('/signup')}>
         <Text style={styles.signupButtonText}>Sign Up</Text>
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;
 
 const styles = StyleSheet.create({
   container: {
@@ -51,7 +42,6 @@ const styles = StyleSheet.create({
     color: colors.purple,
     marginBottom: 40,
   },
-
   loginButton: {
     width: '80%',
     padding: 15,
@@ -64,7 +54,6 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 16,
   },
-
   signupButton: {
     width: '80%',
     padding: 15,
@@ -78,4 +67,5 @@ const styles = StyleSheet.create({
     color: colors.purple,
     fontSize: 16,
   },
-})
+});
+
