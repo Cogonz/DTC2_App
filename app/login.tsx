@@ -18,6 +18,7 @@ const colors = {
   white: '#FFFFFF',
 };
 
+// Only allow emails at @u.northwestern.edu
 const emailRegex = /^[^\s@]+@u\.northwestern\.edu$/;
 
 const LoginPage: React.FC = () => {
@@ -27,17 +28,15 @@ const LoginPage: React.FC = () => {
 
   const handleLogin = () => {
     if (!emailRegex.test(email)) {
-        Alert.alert('Error', 'That email isn’t allowed—please use your Northwestern address.');
-        return;
-    }
-
-    if (!email || !password) {
-      Alert.alert('Error', 'Please enter both email and password.');
+      Alert.alert('Error', 'Please use a valid @u.northwestern.edu email.');
       return;
     }
-    // TODO: Authenticate with backend
-    // On success, navigate to home/dashboard
-    router.replace('/');
+    if (!password) {
+      Alert.alert('Error', 'Please enter your password.');
+      return;
+    }
+    // Navigate to the Map page
+    router.push('/map');
   };
 
   return (
@@ -94,6 +93,12 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     fontWeight: '600',
   },
+  label: {
+    width: '100%',
+    marginBottom: 5,
+    color: colors.purple,
+    fontWeight: '500',
+  },
   input: {
     width: '100%',
     padding: 12,
@@ -115,10 +120,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
   },
-  label: {
-    width: '100%',
-    marginBottom: 5,
-    color: colors.purple,
-    fontWeight: '500',
-  }
 });
