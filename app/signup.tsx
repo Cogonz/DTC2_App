@@ -9,14 +9,19 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Switch,
+  Linking,
 } from 'react-native';
 
 // Northwestern colors
 const colors = {
   purple: '#4E2A84',
   white: '#FFFFFF',
+  disabledGray: '#CCCCCC',
+  disabledText: '#777777',
 };
 
+// Only allow emails at @u.northwestern.edu
 const emailRegex = /^[^\s@]+@u\.northwestern\.edu$/;
 
 const SignUpPage: React.FC = () => {
@@ -25,23 +30,32 @@ const SignUpPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [studentId, setStudentId] = useState('');
-
+  const [agree, setAgree] = useState(false);
 
   const handleSignUp = () => {
     if (!emailRegex.test(email)) {
-      Alert.alert('Error', 'That email isn’t allowed—please use your Northwestern address.');
+      Alert.alert('Error', 'Please use a valid @u.northwestern.edu email.');
       return;
     }
-    // existing “empty fields” check
     if (!firstName || !lastName || !password || !studentId) {
       Alert.alert('Error', 'Please fill out all fields.');
       return;
     }
-    // Here you would typically call your backend/API
+    if (!agree) {
+      // This should never fire when disabled, but kept for safety
+      Alert.alert('Error', 'You must accept the Terms of Service to continue.');
+      return;
+    }
+    // Call your backend/API here
     Alert.alert(
       'Sign Up',
       `First: ${firstName}\nLast: ${lastName}\nEmail: ${email}\nStudent ID: ${studentId}`
     );
+  };
+
+  const openTerms = () => {
+    // Navigate to the Terms of Service page
+    Linking.openURL('https://bit.ly/3ZjN3We');
   };
 
   return (
@@ -96,8 +110,27 @@ const SignUpPage: React.FC = () => {
           onChangeText={setStudentId}
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-          <Text style={styles.buttonText}>Sign Up</Text>
+        <View style={styles.termsContainer}>
+          <Switch
+            value={agree}
+            onValueChange={setAgree}
+            trackColor={{ false: '#767577', true: colors.purple }}
+            thumbColor={agree ? colors.white : '#f4f3f4'}
+          />
+          <Text style={styles.termsText}>
+            I agree to the{' '}
+            <Text style={styles.link} onPress={openTerms}>
+              Terms of Service
+            </Text>
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          style={[styles.button, !agree && styles.buttonDisabled]}
+          onPress={handleSignUp}
+          disabled={!agree}
+        >
+          <Text style={[styles.buttonText, !agree && styles.buttonDisabledText]}>Sign Up</Text>
         </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -137,6 +170,20 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 15,
   },
+  termsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+    width: '100%',
+  },
+  termsText: {
+    marginLeft: 8,
+    color: colors.purple,
+  },
+  link: {
+    textDecorationLine: 'underline',
+    color: colors.purple,
+  },
   button: {
     width: '100%',
     padding: 15,
@@ -145,9 +192,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
   },
+  buttonDisabled: {
+    backgroundColor: colors.disabledGray,
+  },
   buttonText: {
     color: colors.white,
     fontSize: 16,
     fontWeight: '500',
+  },
+  buttonDisabledText: {
+    color: colors.disabledText,
   },
 });
