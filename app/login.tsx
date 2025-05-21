@@ -1,3 +1,4 @@
+// app/login.tsx
 import React, { useState } from 'react';
 import {
   View,
@@ -18,7 +19,7 @@ const colors = {
   white: '#FFFFFF',
 };
 
-// Only allow emails at @u.northwestern.edu
+// Only allow @u.northwestern.edu emails
 const emailRegex = /^[^\s@]+@u\.northwestern\.edu$/;
 
 const LoginPage: React.FC = () => {
@@ -36,7 +37,7 @@ const LoginPage: React.FC = () => {
       return;
     }
     // Navigate to the Map page
-    router.push('/map');
+    router.push({ pathname: '/map' });
   };
 
   return (

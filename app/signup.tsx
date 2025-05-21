@@ -12,6 +12,7 @@ import {
   Switch,
   Linking,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 
 // Northwestern colors
 const colors = {
@@ -25,12 +26,15 @@ const colors = {
 const emailRegex = /^[^\s@]+@u\.northwestern\.edu$/;
 
 const SignUpPage: React.FC = () => {
+  const router = useRouter();
+  
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [studentId, setStudentId] = useState('');
   const [agree, setAgree] = useState(false);
+  
 
   const handleSignUp = () => {
     if (!emailRegex.test(email)) {
@@ -46,6 +50,7 @@ const SignUpPage: React.FC = () => {
       Alert.alert('Error', 'You must accept the Terms of Service to continue.');
       return;
     }
+    router.push('/map');
     // Call your backend/API here
     Alert.alert(
       'Sign Up',
